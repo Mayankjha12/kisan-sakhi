@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import FormInputs from './FormInputs';
 
-// --- ADD LANGUAGE MAP AND CODES HERE (same as in Header.js) ---
+// --- LANGUAGE MAP (for displaying full names in dropdowns) ---
 const languageMap = {
     "en": "English", "hi": "Hindi", "pa": "Punjabi", "mr": "Marathi", "gu": "Gujarati", 
     "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam", 
     "or": "Odia", "as": "Assamese", "ur": "Urdu", "sd": "Sindhi", "sa": "Sanskrit", 
     "ks": "Kashmiri", "kok": "Konkani", "mai": "Maithili", "ne": "Nepali"
 };
-
 const allLangCodes = Object.keys(languageMap);
 // --- END OF LANGUAGE MAP ---
 
@@ -24,19 +23,30 @@ const FormSection = ({ langData, currentLang, onLangChange }) => {
         'kok': 'kok-IN', 'mai': 'mai-IN', 'ne': 'ne-IN'
     };
 
-    // 1. Form Submission Logic
+    // 1. Form Submission Logic (Using Local Storage for Prototype)
     const handleSubmit = (e) => {
         e.preventDefault();
-        const imageFile = formData.image;
-        if (imageFile) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                console.log("Image data processed:", reader.result.substring(0, 50) + "...");
-            };
-            reader.readAsDataURL(imageFile);
+        
+        // --- LOCAL STORAGE IMPLEMENTATION ---
+        const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
+
+        const newFarmData = {
+            id: Date.now(),
+            dateSubmitted: new Date().toISOString(),
+            ...formData
+        };
+        
+        existingData.push(newFarmData);
+        localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
+        // --- END LOCAL STORAGE ---
+
+        console.log("Data saved to Local Storage:", newFarmData);
+        
+        if (formData.image) {
+            console.log("Image file received (not uploaded to server for prototype).");
         }
-        console.log("Final Form Data:", formData);
-        alert(langData.submitBtn + " successful! Check console for data.");
+        
+        alert(langData.submitBtn + " successful! Data is stored locally for demonstration.");
     };
 
     // 2. Voice Input Logic
@@ -85,7 +95,7 @@ const FormSection = ({ langData, currentLang, onLangChange }) => {
                 <h2 className="text-center text-4xl font-bold text-green-600 mb-8 font-poppins">{langData.formHeading}</h2>
                 <div className="flex flex-col lg:flex-row gap-8 shadow-2xl rounded-2xl bg-white p-6 md:p-8">
                     
-                    {/* Left Panel: Voice Input (Alignment Fix: justify-start) */}
+                    {/* Left Panel: Voice Input (FIX: justify-start to move content up) */}
                     <div className="flex-1 p-6 rounded-xl border border-gray-200 flex flex-col items-center justify-start text-center max-w-full lg:max-w-md">
                         <i className="fa-solid fa-microphone text-6xl text-green-500 mb-4"></i>
                         <h3 className="text-xl font-semibold text-green-600 mb-1">{langData.voiceInputTitle}</h3>
