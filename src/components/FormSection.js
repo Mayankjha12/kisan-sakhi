@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import FormInputs from './FormInputs';
-import ChatbotResult from './ChatbotResult'; // <-- IMPORT NEW COMPONENT
+import ChatbotResult from './ChatbotResult'; // Assuming you create this file
 
-// --- LANGUAGE MAP (same as before) ---
+// --- LANGUAGE MAP (for displaying full names in dropdowns) ---
 const languageMap = {
     "en": "English", "hi": "Hindi", "pa": "Punjabi", "mr": "Marathi", "gu": "Gujarati", 
     "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam", 
@@ -16,35 +16,37 @@ const FormSection = ({ langData, currentLang, onLangChange }) => {
     const [formData, setFormData] = useState({});
     const [voiceOutput, setVoiceOutput] = useState('');
     const [isRecording, setIsRecording] = useState(false);
-    const [showResults, setShowResults] = useState(false); // <-- STATE TO CONTROL RESULT VISIBILITY
+    const [showResults, setShowResults] = useState(false); // State to show/hide chatbot results
     
-    // Voice Language Codes used for Speech Recognition (omitted for brevity)
-    const voiceLangCodes = { /* ... */ };
+    const voiceLangCodes = { /* ... */ }; // (Omitted for brevity, but needed in final code)
 
     // 1. Form Submission Logic (Using Local Storage for Prototype)
     const handleSubmit = (e) => {
         e.preventDefault();
         
+        // Save data to local storage
         const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
         const newFarmData = {
             id: Date.now(),
             dateSubmitted: new Date().toISOString(),
             ...formData
         };
-        
         existingData.push(newFarmData);
         localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
 
         console.log("Data saved to Local Storage:", newFarmData);
         
         // Show results and scroll
-        setShowResults(true);
+        setShowResults(true); 
         setTimeout(() => {
-            document.getElementById('chatbot-results-anchor').scrollIntoView({ behavior: 'smooth' });
+            const resultsElement = document.getElementById('chatbot-results-anchor');
+            if (resultsElement) {
+                resultsElement.scrollIntoView({ behavior: 'smooth' });
+            }
         }, 100);
     };
 
-    // 2. Voice Input Logic (omitted for brevity)
+    // 2. Voice Input Logic (Omitted for brevity, but needed in final code)
     const startVoiceRecording = () => { /* ... */ };
     
     return (
@@ -55,11 +57,11 @@ const FormSection = ({ langData, currentLang, onLangChange }) => {
                     
                     {/* Left Panel: Voice Input (FIX: justify-start to move content up) */}
                     <div className="flex-1 p-6 rounded-xl border border-gray-200 flex flex-col items-center justify-start text-center max-w-full lg:max-w-md">
-                        {/* ... (Existing Voice Input Code) ... */}
                         <i className="fa-solid fa-microphone text-6xl text-green-500 mb-4"></i>
                         <h3 className="text-xl font-semibold text-green-600 mb-1">{langData.voiceInputTitle}</h3>
                         <p className="text-sm text-gray-500 mb-4">{langData.voiceInputSubtitle}</p>
                         
+                        {/* FIX: Voice Language Dropdown (Displays full name) */}
                         <select id="voice-language" className="p-2 border border-gray-300 rounded-lg w-full max-w-xs mb-4" value={currentLang} onChange={(e) => onLangChange(e.target.value)}>
                             {allLangCodes.map(lang => (<option key={lang} value={lang}>{languageMap[lang]}</option>))}
                         </select>
@@ -68,13 +70,14 @@ const FormSection = ({ langData, currentLang, onLangChange }) => {
                             <i className={`fa-solid ${isRecording ? 'fa-stop' : 'fa-microphone'} mr-2`}></i> {isRecording ? 'Stop Recording' : 'Start Recording'}
                         </button>
                         
-                        <div id="voice-output" className="mt-4 p-3 bg-green-50 text-gray-700 rounded-lg min-h-12 w-full max-w-xs">{voiceOutput}</div>
+                        <div id="voice-output" className="mt-4 p-3 bg-green-50 text-gray-700 rounded-lg min-h-12 w-full max-w-xs">{"Ready"}</div>
                     </div>
 
                     {/* Right Panel: Form Fields */}
                     <div className="flex-1 p-6 rounded-xl border border-gray-200">
                         <div className="mb-4 flex items-center justify-between">
                             <label htmlFor="form-language" className="font-semibold text-gray-700 text-sm">Form Language:</label>
+                            {/* FIX: Form Language Dropdown (Displays full name) */}
                             <select id="form-language" className="p-2 border border-gray-300 rounded-lg" value={currentLang} onChange={(e) => onLangChange(e.target.value)}>
                                 {allLangCodes.map(lang => (<option key={lang} value={lang}>{languageMap[lang]}</option>))}
                             </select>
