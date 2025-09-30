@@ -1,28 +1,29 @@
 import React from 'react';
 
-// List of all 20 language codes based on your index.html
-const allLangCodes = [
-    "en", "hi", "pa", "mr", "gu", "bn", "ta", "te", "kn", "ml", "or", "as", "ur", "sd", "sa", "ks", "kok", "mai", "ne"
-];
+const languageMap = {
+    "en": "English", "hi": "Hindi", "pa": "Punjabi", "mr": "Marathi", "gu": "Gujarati", 
+    "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam", 
+    "or": "Odia", "as": "Assamese", "ur": "Urdu", "sd": "Sindhi", "sa": "Sanskrit", 
+    "ks": "Kashmiri", "kok": "Konkani", "mai": "Maithili", "ne": "Nepali"
+};
+
+const allLangCodes = Object.keys(languageMap);
 
 const Header = ({ langData, currentLang, onLangChange }) => {
-    // Note: The mobile nav toggle (hamburger menu) needs a separate JS/State component if you want it to appear/disappear.
-    // The current CSS makes the nav-menu disappear on mobile.
-
     return (
         <header className="bg-white shadow-sm sticky top-0 z-10 w-full">
             <nav className="flex justify-between items-center max-w-7xl mx-auto px-4 lg:px-8 py-4 flex-wrap">
                 <div className="flex items-center gap-2">
                     <i className="fa-solid fa-leaf text-green-600 text-xl"></i>
-                    <h1 className="font-poppins text-lg font-medium text-green-600">AgroKheti</h1>
+                    <h1 className="font-poppins text-lg font-medium text-green-600">KrishiSakhi</h1>
                 </div>
 
                 <ul className="nav-menu hidden lg:flex list-none gap-8">
                     <li><a href="/" className="text-gray-700 hover:text-green-600 border-b-2 border-green-600 font-bold pb-1.5">{langData.home}</a></li>
-                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.myFarm}</a></li>
-                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.todo}</a></li>
-                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.trend}</a></li>
-                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.feedback}</a></li>
+                    <li><a href="/my-farm" className="text-gray-700 hover:text-green-600">{langData.myFarm}</a></li>
+                    <li><a href="/todo" className="text-gray-700 hover:text-green-600">{langData.todo}</a></li>
+                    <li><a href="/trend" className="text-gray-700 hover:text-green-600">{langData.trend}</a></li>
+                    <li><a href="/feedback" className="text-gray-700 hover:text-green-600">{langData.feedback}</a></li>
                 </ul>
 
                 <div className="nav-right flex items-center gap-4">
@@ -44,7 +45,7 @@ const Header = ({ langData, currentLang, onLangChange }) => {
                             onChange={(e) => onLangChange(e.target.value)}
                         >
                             {allLangCodes.map(lang => (
-                                <option key={lang} value={lang}>{lang.toUpperCase()}</option>
+                                <option key={lang} value={lang}>{languageMap[lang]}</option>
                             ))}
                         </select>
                     </div>
