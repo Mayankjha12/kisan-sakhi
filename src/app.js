@@ -1,37 +1,42 @@
-import React, { useState,useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import FormSection from './components/FormSection';
 import Footer from './components/Footer';
+import ChatbotResult from './components/ChatbotResult'; // Make sure this file exists
 import { translations } from './data/translations';
 
 const supportedLangs = Object.keys(translations);
 
 function App() {
-    // Determine initial language from a combination of form and web dropdowns
-    const initialLang = 'en'; // Start with 'en' unless you store user preference
+    const initialLang = 'en';
     const [currentLang, setCurrentLang] = useState(initialLang);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [currentPage, setCurrentPage] = useState('home'); // 'home' or 'results'
 
-    // Function to handle language sync across the whole app
     const handleLanguageChange = useCallback((newLang) => {
         if (supportedLangs.includes(newLang)) {
             setCurrentLang(newLang);
             document.documentElement.lang = newLang;
         }
     }, []);
-
-    // Get the UI text objects for the current language
-    const langData = translations[currentLang] || translations.en;
     
-    return (
-        <div className="min-h-screen flex flex-col font-lato text-gray-800">
-            <Header 
-                langData={langData} 
-                currentLang={currentLang}
-                onLangChange={handleLanguageChange}
-            />
-            <main className="flex-grow">
+    // NEW FUNCTION: Handles navigating to the results page after submission
+    const navigateToResults = () => {
+        setCurrentPage('results');
+        setIsFormVisible(false);
+    };
+
+    const langData = translations[currentLang] || translations.en;
+
+    const renderPage = () => {
+        if (currentPage === 'results') {
+            // Renders the full chatbot page
+            return <ChatbotResult langData={langData} />;
+        }
+        // Renders the Home Page with Hero and Form
+        return (
+            <>
                 <Hero 
                     langData={langData}
                     onShowForm={() => {
@@ -47,8 +52,22 @@ function App() {
                         langData={langData} 
                         currentLang={currentLang}
                         onLangChange={handleLanguageChange}
+                        onFormSubmitSuccess={navigateToResults} // Pass the success handler here
                     />
                 )}
+            </>
+        );
+    };
+    
+    return (
+        <div className="min-h-screen flex flex-col font-lato text-gray-800">
+            <Header 
+                langData={langData} 
+                currentLang={currentLang}
+                onLangChange={handleLanguageChange}
+            />
+            <main className="flex-grow">
+                {renderPage()}
             </main>
             <Footer langData={langData} />
         </div>
