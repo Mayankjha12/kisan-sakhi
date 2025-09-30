@@ -49,7 +49,7 @@ const Header = ({ langData, currentLang, onLangChange }) => {
                         </select>
                     </div>
 
-                    <a href="#" className="accessibility-icon" aria-label="Accessibility Options">
+                    <a href="/" className="accessibility-icon" aria-label="Accessibility Options">
                         <i className="fa-solid fa-universal-access text-xl text-gray-700 hover:text-green-600"></i>
                     </a>
                 </div>
