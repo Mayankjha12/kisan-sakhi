@@ -18,11 +18,11 @@ const Header = ({ langData, currentLang, onLangChange }) => {
                 </div>
 
                 <ul className="nav-menu hidden lg:flex list-none gap-8">
-                    <li><a href="#" className="text-gray-700 hover:text-green-600 border-b-2 border-green-600 font-bold pb-1.5">{langData.home}</a></li>
-                    <li><a href="#" className="text-gray-700 hover:text-green-600">{langData.myFarm}</a></li>
-                    <li><a href="#" className="text-gray-700 hover:text-green-600">{langData.todo}</a></li>
-                    <li><a href="#" className="text-gray-700 hover:text-green-600">{langData.trend}</a></li>
-                    <li><a href="#" className="text-gray-700 hover:text-green-600">{langData.feedback}</a></li>
+                    <li><a href="/" className="text-gray-700 hover:text-green-600 border-b-2 border-green-600 font-bold pb-1.5">{langData.home}</a></li>
+                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.myFarm}</a></li>
+                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.todo}</a></li>
+                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.trend}</a></li>
+                    <li><a href="/" className="text-gray-700 hover:text-green-600">{langData.feedback}</a></li>
                 </ul>
 
                 <div className="nav-right flex items-center gap-4">
