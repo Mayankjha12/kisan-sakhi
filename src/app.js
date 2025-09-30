@@ -9,7 +9,7 @@ import { translations } from './data/translations';
 const supportedLangs = Object.keys(translations);
 
 function App() {
-    const initialLang = 'en';
+    const initialLang = 'en'; 
     const [currentLang, setCurrentLang] = useState(initialLang);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [currentPage, setCurrentPage] = useState('home'); // 'home' or 'results'
@@ -21,7 +21,7 @@ function App() {
         }
     }, []);
     
-    // NEW FUNCTION: Handles navigating to the results page after submission
+    // FUNCTION: Instantly changes the page view
     const navigateToResults = () => {
         setCurrentPage('results');
         setIsFormVisible(false);
@@ -31,17 +31,14 @@ function App() {
 
     const renderPage = () => {
         if (currentPage === 'results') {
-            // Renders the full chatbot page
-            return <ChatbotResult langData={langData} />;
+            return <ChatbotResult langData={langData} />; // SHOWS FULL PAGE CHATBOT
         }
-        // Renders the Home Page with Hero and Form
         return (
             <>
                 <Hero 
                     langData={langData}
                     onShowForm={() => {
                         setIsFormVisible(true);
-                        // Optional: Scroll to the form after showing it
                         setTimeout(() => {
                             document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
                         }, 100);
@@ -52,7 +49,7 @@ function App() {
                         langData={langData} 
                         currentLang={currentLang}
                         onLangChange={handleLanguageChange}
-                        onFormSubmitSuccess={navigateToResults} // Pass the success handler here
+                        onFormSubmitSuccess={navigateToResults} // PASS THE HANDLER
                     />
                 )}
             </>
