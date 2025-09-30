@@ -1,3 +1,4 @@
+// Consolidates all translations for the entire application (Nav, Hero, Form, Footer)
 export const translations = {
     en: {
         home: 'Home', myFarm: 'My farm', todo: 'To-Do List', trend: 'Local Trend', feedback: 'Feedback',
@@ -211,11 +212,11 @@ export const translations = {
         search: 'সন্ধান...', websiteLanguage: "ৱেবছাইটৰ ভাষা:",
         heroTitle: 'কৃষি সখী', heroSubtitle: '', heroDate: '', heroBtn: 'কৃষকসকলক উন্নত কৰাত সহায় কৰা',
         voiceInputTitle: "ভইচ ইনপুট", voiceInputSubtitle: "আপোনাৰ স্থানীয় ভাষাত আপোনাৰ বিৱৰণ ৰেকৰ্ড কৰক।", 
-        formHeading: "ফৰ্মৰ বিৱৰণ দিয়ক", formDetailsHeading: "পামৰ বিৱৰণ", submitBtn: "দাখিল কৰক",
+        formHeading: "ফৰ্মৰ বিৱৰଣ দিয়ক", formDetailsHeading: "পামৰ বিৱৰণ", submitBtn: "দাখিল কৰক",
         footerSchemes: 'আঁচনি', footerMarketPrices: 'বজাৰৰ দাম', footerContact: 'যোগাযোগ', footerCopy: '© 2025 কৃষি সখী. সকলো অধিকাৰ সংৰক্ষিত।',
         locationLabel: "অৱস্থান", landSizeLabel: "মাটিৰ আকাৰ", cropLabel: "শস্য", soilTypeLabel: "মাটিৰ ধৰণ",
         soilCharacterLabel: "মাটিৰ চৰিত্ৰ", irrigationLabel: "সেচৰ উৎস", sowingLabel: "বপন ধৰণ", 
-        sowingDateLabel: "বপনৰ তাৰিখ", cropStageLabel: "শস্যৰ স্তৰ", problemLabel: "বৰ্তମାନৰ সমস্যা", uploadImageLabel: "ছবি আপলোড কৰক",
+        sowingDateLabel: "বপনৰ তাৰিখ", cropStageLabel: "শস্যৰ স্তৰ", problemLabel: "বৰ্তমানৰ সমস্যা", uploadImageLabel: "ছবি আপলোড কৰক",
         locationOptions: ["অৱস্থান বাছক", "অটো-ডিটেক্ট GPS", "জিলা A", "জিলা B", "জিলা C"],
         landSizeOptions: ["<1 একৰ", "1–5 একৰ", "5+ একৰ"], cropOptions: ["ঘেঁহু", "ধান", "মাকৈ", "ছয়াবিন"], 
         soilTypeOptions: ["বালি", "চিনামাটি", "দোআঁশ", "কলা"],
