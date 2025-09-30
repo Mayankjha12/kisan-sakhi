@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Map of language codes to full display names (Required for showing full names instead of codes)
 const languageMap = {
     "en": "English", "hi": "Hindi", "pa": "Punjabi", "mr": "Marathi", "gu": "Gujarati", 
     "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam", 
@@ -15,6 +16,7 @@ const Header = ({ langData, currentLang, onLangChange }) => {
             <nav className="flex justify-between items-center max-w-7xl mx-auto px-4 lg:px-8 py-4 flex-wrap">
                 <div className="flex items-center gap-2">
                     <i className="fa-solid fa-leaf text-green-600 text-xl"></i>
+                    {/* H1 changed to KrishiSakhi */}
                     <h1 className="font-poppins text-lg font-medium text-green-600">KrishiSakhi</h1>
                 </div>
 
@@ -44,6 +46,7 @@ const Header = ({ langData, currentLang, onLangChange }) => {
                             value={currentLang}
                             onChange={(e) => onLangChange(e.target.value)}
                         >
+                            {/* FIX: Use languageMap to display full names */}
                             {allLangCodes.map(lang => (
                                 <option key={lang} value={lang}>{languageMap[lang]}</option>
                             ))}
