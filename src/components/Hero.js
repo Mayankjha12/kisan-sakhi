@@ -11,10 +11,13 @@ const Hero = ({ langData, onShowForm }) => {
                 paddingRight: '0' 
             }}
         >
-            <div className="bg-gray-900/50 p-12 rounded-xl text-white max-w-2xl shadow-xl text-center">
-                <h2 className="font-poppins text-4xl font-bold mb-4">{langData.heroTitle}</h2>
+            {/* Added styling classes for centering/sizing the box on desktop */}
+            <div className="bg-gray-900/50 p-12 rounded-xl text-white max-w-md shadow-xl text-center mx-auto md:mx-0">
                 
-                {/* Subtitle and Date removed as requested */}
+                {/* Logo text size increased for prominence */}
+                <h2 className="font-poppins text-5xl font-bold mb-6">{langData.heroTitle}</h2>
+                
+                {/* Removed Subtitle and Date lines here */}
                 
                 <button
                     id="show-form"
