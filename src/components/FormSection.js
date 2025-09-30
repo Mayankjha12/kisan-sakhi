@@ -43,7 +43,7 @@ const FormSection = ({ langData, currentLang, onLangChange }) => {
         console.log("Data saved to Local Storage:", newFarmData);
         
         if (formData.image) {
-            console.log("Image file received (not uploaded to server for prototype).");
+            console.log("Image file received. It is optional and will not break the build.");
         }
         
         alert(langData.submitBtn + " successful! Data is stored locally for demonstration.");
