@@ -1,15 +1,18 @@
 // Consolidates all translations for the entire application (Nav, Hero, Form, Footer)
 export const translations = {
     en: {
+        // Nav & Hero Text
         home: 'Home', myFarm: 'My farm', todo: 'To-Do List', trend: 'Local Trend', feedback: 'Feedback',
         search: 'Search...', websiteLanguage: "Website Language:",
         heroTitle: 'KrishiSakhi', heroSubtitle: '', heroDate: '', heroBtn: 'Helping Farmers to build better',
         voiceInputTitle: "Voice Input", voiceInputSubtitle: "Record your details in your local language.", 
         formHeading: 'Enter the Form Detail', formDetailsHeading: "Farm Details", submitBtn: "Submit",
         footerSchemes: 'Schemes', footerMarketPrices: 'Market Prices', footerContact: 'Contact', footerCopy: '© 2025 KrishiSakhi. All rights reserved.', 
+        // Form Labels
         locationLabel: "Location", landSizeLabel: "Land Size", cropLabel: "Crop", soilTypeLabel: "Soil Type",
         soilCharacterLabel: "Soil Character", irrigationLabel: "Irrigation Source", sowingLabel: "Sowing Type", 
         sowingDateLabel: "Sowing Date", cropStageLabel: "Crop Stage", problemLabel: "Current Problem", uploadImageLabel: "Upload Image",
+        // Dropdown Options
         locationOptions: ["Select Location", "Auto-detect GPS", "District A", "District B", "District C"],
         landSizeOptions: ["<1 acre", "1–5 acres", "5+ acres"], cropOptions: ["Wheat", "Rice", "Maize", "Soybean"], 
         soilTypeOptions: ["Sandy", "Clay", "Loamy", "Black"],
@@ -208,15 +211,15 @@ export const translations = {
         problemOptions: ["ସମସ୍ୟା ଚୟନ କରନ୍ତୁ", "ସାର ସମସ୍ୟା", "ଜଳସେଚନ ସମସ୍ୟା", "ରୋଗ", "କୀଟ", "ଅନ୍ୟ"]
     },
     as: {
-        home: 'গৃহ', myFarm: 'মোৰ পাম', todo: 'কৰিবলগীয়া তালিকা', trend: 'স্থানীয় প্ৰৱণতা', feedback: 'প্ৰতিক্ৰিয়া',
+        home: 'গৃহ', myFarm: 'মোৰ পাম', todo: 'কৰিবলগীয়া তালিকা', trend: 'স্থানীয় প্ৰৱণতা', feedback: 'প্ৰতিক্ৰିয়া',
         search: 'সন্ধান...', websiteLanguage: "ৱেবছাইটৰ ভাষা:",
         heroTitle: 'কৃষি সখী', heroSubtitle: '', heroDate: '', heroBtn: 'কৃষকসকলক উন্নত কৰাত সহায় কৰা',
         voiceInputTitle: "ভইচ ইনপুট", voiceInputSubtitle: "আপোনাৰ স্থানীয় ভাষাত আপোনাৰ বিৱৰণ ৰেকৰ্ড কৰক।", 
-        formHeading: "ফৰ্মৰ বিৱৰଣ দিয়ক", formDetailsHeading: "পামৰ বিৱৰণ", submitBtn: "দাখিল কৰক",
+        formHeading: "ফৰ্মৰ বিৱৰণ দিয়ক", formDetailsHeading: "পামৰ বিৱৰଣ", submitBtn: "দাখিল কৰক",
         footerSchemes: 'আঁচনি', footerMarketPrices: 'বজাৰৰ দাম', footerContact: 'যোগাযোগ', footerCopy: '© 2025 কৃষি সখী. সকলো অধিকাৰ সংৰক্ষিত।',
         locationLabel: "অৱস্থান", landSizeLabel: "মাটিৰ আকাৰ", cropLabel: "শস্য", soilTypeLabel: "মাটিৰ ধৰণ",
         soilCharacterLabel: "মাটিৰ চৰিত্ৰ", irrigationLabel: "সেচৰ উৎস", sowingLabel: "বপন ধৰণ", 
-        sowingDateLabel: "বপনৰ তাৰিখ", cropStageLabel: "শস্যৰ স্তৰ", problemLabel: "বৰ্তমানৰ সমস্যা", uploadImageLabel: "ছবি আপলোড কৰক",
+        sowingDateLabel: "বপনৰ তাৰিখ", cropStageLabel: "শস্যৰ স্তৰ", problemLabel: "বৰ্তମାନৰ সমস্যা", uploadImageLabel: "ছবি আপলোড কৰক",
         locationOptions: ["অৱস্থান বাছক", "অটো-ডিটেক্ট GPS", "জিলা A", "জিলা B", "জিলা C"],
         landSizeOptions: ["<1 একৰ", "1–5 একৰ", "5+ একৰ"], cropOptions: ["ঘেঁহু", "ধান", "মাকৈ", "ছয়াবিন"], 
         soilTypeOptions: ["বালি", "চিনামাটি", "দোআঁশ", "কলা"],
@@ -312,7 +315,7 @@ export const translations = {
         locationLabel: "सुवात", landSizeLabel: "भूमीचे आकार", cropLabel: "पिक", soilTypeLabel: "मातीचा प्रकार",
         soilCharacterLabel: "मातीची प्रकृती", irrigationLabel: "सिंचन स्रोत", sowingLabel: "पेरणी प्रकार", 
         sowingDateLabel: "पेरणीची तारीख", cropStageLabel: "पिकाचो टप्पो", problemLabel: "सद्य समस्या", uploadImageLabel: "फोटो अपलोड करा",
-        locationOptions: ["सुवात निवडात", "ऑटो-डिटेक्ट GPS", "जिल्हा A", "जिल्हा B", "जिल्हा C"],
+        locationOptions: ["सुवात निवडात", "ऑटो-डि-detect GPS", "जिल्हा A", "जिल्हा B", "जिल्हा C"],
         landSizeOptions: ["<1 एकर", "1–5 एकर", "5+ एकर"], cropOptions: ["गव", "तांदूळ", "मको", "सोयाबीन"], 
         soilTypeOptions: ["रेवाळ", "चिकणमाती", "पोयटा माती", "काळो"],
         soilCharacterOptions: ["मातीची प्रकृती निवडात", "खात्री ना", "काळो", "तांबडो", "हळडो", "भुऱ्या", "व्हड उर्वरता", "उणे उर्वरता"],
