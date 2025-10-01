@@ -12,7 +12,7 @@ const fieldMap = [
     { key: 'sowingDate', labelKey: 'sowingDateLabel', type: 'date' },
     { key: 'cropStage', labelKey: 'cropStageLabel', optionsKey: 'cropStageOptions', type: 'select' },
     { key: 'problem', labelKey: 'problemLabel', optionsKey: 'problemOptions', type: 'select' },
-    { key: 'image', labelKey: 'uploadImageLabel', type: 'file' },
+    // Removed the { key: 'image', ... } entry to delete the Upload Image field
 ];
 
 function FormInputs({ langData, setFormData }) {
@@ -20,6 +20,8 @@ function FormInputs({ langData, setFormData }) {
     // Handler to update form state in the parent FormSection component
     const handleChange = (e) => {
         const { id, value, type, files } = e.target;
+        
+        // This ensures all required fields are being tracked
         setFormData(prev => ({
             ...prev,
             [id]: type === 'file' ? files[0] : value
@@ -38,8 +40,9 @@ function FormInputs({ langData, setFormData }) {
                             id={field.key}
                             onChange={handleChange}
                             className="p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                            // Ensure the select dropdowns have a default value for validation
+                            defaultValue={langData[field.optionsKey][0]} 
                         >
-                            {/* Use null check on options array in case of missing translation, defaults to empty array */}
                             {(langData[field.optionsKey] || []).map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}
@@ -52,7 +55,7 @@ function FormInputs({ langData, setFormData }) {
                             type={field.type}
                             onChange={handleChange}
                             className="p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                            accept={field.type === 'file' ? 'image/*' : undefined}
+                            // No 'accept="image/*"' and no 'required' attribute, making it optional by nature
                         />
                     )}
                 </div>
