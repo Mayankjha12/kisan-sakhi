@@ -9,24 +9,50 @@ const languageMap = {
 
 const allLangCodes = Object.keys(languageMap);
 
-const Header = ({ langData, currentLang, onLangChange }) => {
+// FIX: onNavigate prop ko yahan receive karna hai
+const Header = ({ langData, currentLang, onLangChange, onNavigate, currentPage }) => {
+    
+    // Helper function to handle clicks without page reload
+    const handleNavClick = (e, page) => {
+        e.preventDefault();
+        onNavigate(page);
+    };
+
     return (
         <header className="bg-white shadow-sm sticky top-0 z-10 w-full">
             <nav className="flex justify-between items-center max-w-7xl mx-auto px-4 lg:px-8 py-4 flex-wrap">
-                <div className="flex items-center gap-2">
+                {/* Logo click se home par wapas */}
+                <div className="flex items-center gap-2 cursor-pointer" onClick={(e) => handleNavClick(e, 'home')}>
                     <i className="fa-solid fa-leaf text-green-600 text-xl"></i>
                     <h1 className="font-poppins text-lg font-medium text-green-600">KrishiSakhi</h1>
                 </div>
 
                 <ul className="nav-menu hidden lg:flex list-none gap-8">
-                    <li><a href="/" className="text-gray-700 hover:text-green-600 border-b-2 border-green-600 font-bold pb-1.5">{langData.home}</a></li>
-                    <li><a href="/my-farm" className="text-gray-700 hover:text-green-600">{langData.myFarm}</a></li>
-                    <li><a href="/todo" className="text-gray-700 hover:text-green-600">{langData.todo}</a></li>
-                    <li><a href="/trend" className="text-gray-700 hover:text-green-600">{langData.trend}</a></li>
-                    <li><a href="/feedback" className="text-gray-700 hover:text-green-600">{langData.feedback}</a></li>
+                    {/* Har link ab onNavigate ko trigger karega */}
+                    <li>
+                        <button 
+                            onClick={(e) => handleNavClick(e, 'home')} 
+                            className={`text-gray-700 hover:text-green-600 ${currentPage === 'home' ? 'border-b-2 border-green-600 font-bold' : ''} pb-1.5 transition-all`}
+                        >
+                            {langData.home}
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={(e) => handleNavClick(e, 'my-farm')} className="text-gray-700 hover:text-green-600">{langData.myFarm}</button>
+                    </li>
+                    <li>
+                        <button onClick={(e) => handleNavClick(e, 'todo')} className="text-gray-700 hover:text-green-600">{langData.todo}</button>
+                    </li>
+                    <li>
+                        <button onClick={(e) => handleNavClick(e, 'trend')} className="text-gray-700 hover:text-green-600">{langData.trend}</button>
+                    </li>
+                    <li>
+                        <button onClick={(e) => handleNavClick(e, 'feedback')} className="text-gray-700 hover:text-green-600">{langData.feedback}</button>
+                    </li>
                 </ul>
 
                 <div className="nav-right flex items-center gap-4">
+                    {/* Search bar codes remained same */}
                     <div className="search-container relative hidden sm:block">
                         <input 
                             type="text" 
@@ -44,16 +70,15 @@ const Header = ({ langData, currentLang, onLangChange }) => {
                             value={currentLang}
                             onChange={(e) => onLangChange(e.target.value)}
                         >
-                            {/* FIX: Use languageMap to display full names */}
                             {allLangCodes.map(lang => (
                                 <option key={lang} value={lang}>{languageMap[lang]}</option>
                             ))}
                         </select>
                     </div>
 
-                    <a href="/" className="accessibility-icon" aria-label="Accessibility Options">
+                    <button className="accessibility-icon" aria-label="Accessibility Options">
                         <i className="fa-solid fa-universal-access text-xl text-gray-700 hover:text-green-600"></i>
-                    </a>
+                    </button>
                 </div>
             </nav>
         </header>
