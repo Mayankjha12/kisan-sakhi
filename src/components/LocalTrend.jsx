@@ -9,33 +9,54 @@ const LocalTrend = () => {
   ];
 
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-8 min-h-screen">
-      <h2 className="text-3xl font-bold">Local Market Trends [cite: 22, 68]</h2>
+    <div className="p-6 max-w-6xl mx-auto space-y-8 min-h-screen bg-gray-50/30">
+      {/* Page Header */}
+      <div className="space-y-1">
+        <h2 className="text-3xl font-bold text-gray-800">Local Market Trends</h2>
+        <p className="text-gray-500 flex items-center gap-2 text-sm">
+          <i className="fa-solid fa-location-dot text-green-600"></i> Maharashtra Region
+        </p>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Price Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {prices.map((item, idx) => (
-          <div key={idx} className="bg-white border rounded-xl p-6 flex justify-between items-center shadow-sm">
+          <div key={idx} className="bg-white border border-gray-100 rounded-3xl p-6 flex justify-between items-center shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-4">
-              <div className="bg-green-50 p-3 rounded-full text-green-600"><i className="fa-solid fa-leaf"></i></div>
+              <div className="bg-green-50 w-12 h-12 flex items-center justify-center rounded-2xl text-green-600">
+                <i className="fa-solid fa-leaf text-xl"></i>
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">{item.name}</p>
-                <p className="text-xl font-bold">{item.price}/quintal</p>
+                <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{item.name}</p>
+                <p className="text-2xl font-bold text-gray-800">{item.price}/quintal</p>
               </div>
             </div>
-            <span className={`font-bold px-2 py-1 rounded text-sm ${item.change.startsWith('+') ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
+            <span className={`font-bold px-3 py-1.5 rounded-xl text-sm ${item.change.startsWith('+') ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'}`}>
               {item.change}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="bg-green-600 text-white rounded-3xl p-10 text-center space-y-4 shadow-xl">
-        <i className="fa-solid fa-indian-rupee-sign text-4xl"></i>
-        <h3 className="text-2xl font-bold">Get Price Alerts [cite: 102]</h3>
-        <p className="opacity-90">Receive notifications when prices change for your crops.</p>
-        <button className="bg-white text-green-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition">
-          Enable Price Alerts
-        </button>
+      {/* Price Alerts CTA Box */}
+      <div className="bg-green-600 text-white rounded-[2rem] p-12 text-center space-y-6 shadow-xl shadow-green-100 relative overflow-hidden">
+        {/* Subtle Decorative Icon */}
+        <div className="absolute -top-10 -right-10 opacity-10">
+          <i className="fa-solid fa-indian-rupee-sign text-[12rem]"></i>
+        </div>
+
+        <div className="relative z-10 space-y-4">
+          <div className="bg-white/20 w-16 h-16 mx-auto rounded-full flex items-center justify-center backdrop-blur-sm">
+            <i className="fa-solid fa-indian-rupee-sign text-3xl"></i>
+          </div>
+          <h3 className="text-3xl font-bold">Get Price Alerts</h3>
+          <p className="text-green-50 max-w-md mx-auto text-lg">
+            Receive real-time notifications when market prices change for your specific crops.
+          </p>
+          <button className="bg-white text-green-600 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all active:scale-95 shadow-lg">
+            Enable Price Alerts
+          </button>
+        </div>
       </div>
     </div>
   );
