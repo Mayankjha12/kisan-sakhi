@@ -25,5 +25,4 @@ const Footer = ({ langData }) => {
         </footer>
     );
 };
-
 export default Footer;
