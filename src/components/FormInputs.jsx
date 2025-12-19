@@ -11,8 +11,7 @@ const fieldMap = [
     { key: 'sowing', labelKey: 'sowingLabel', optionsKey: 'sowingOptions', type: 'select' },
     { key: 'sowingDate', labelKey: 'sowingDateLabel', type: 'date' },
     { key: 'cropStage', labelKey: 'cropStageLabel', optionsKey: 'cropStageOptions', type: 'select' },
-    { key: 'problem', labelKey: 'problemLabel', optionsKey: 'problemOptions', type: 'select' },
-    // Removed the { key: 'image', ... } entry to delete the Upload Image field
+    { key: 'problem', labelKey: 'problemLabel', optionsKey: 'problemOptions', type: 'select' }
 ];
 
 function FormInputs({ langData, setFormData }) {
@@ -29,19 +28,18 @@ function FormInputs({ langData, setFormData }) {
     };
 
     return (
-        <>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {fieldMap.map(field => (
-                <div key={field.key} className="flex flex-col space-y-1">
-                    <label htmlFor={field.key} className="text-sm font-medium text-gray-700">
+                <div key={field.key} className="flex flex-col space-y-1.5">
+                    <label htmlFor={field.key} className="text-sm font-semibold text-gray-600">
                         {langData[field.labelKey]}
                     </label>
                     {field.type === 'select' ? (
                         <select
                             id={field.key}
                             onChange={handleChange}
-                            className="p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                            // Ensure the select dropdowns have a default value for validation
-                            defaultValue={langData[field.optionsKey][0]} 
+                            className="p-2.5 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
+                            defaultValue={langData[field.optionsKey]?.[0]}
                         >
                             {(langData[field.optionsKey] || []).map((option, index) => (
                                 <option key={index} value={option}>
@@ -54,13 +52,12 @@ function FormInputs({ langData, setFormData }) {
                             id={field.key}
                             type={field.type}
                             onChange={handleChange}
-                            className="p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                            // No 'accept="image/*"' and no 'required' attribute, making it optional by nature
+                            className="p-2.5 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all text-sm"
                         />
                     )}
                 </div>
             ))}
-        </>
+        </div>
     );
 }
 
