@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import FormInputs from './FormInputs';
-// NOTE: ChatbotResult is not imported here as its logic moves to App.js now.
 
-// --- LANGUAGE MAP (Necessary for full names) ---
 const languageMap = {
     "en": "English", "hi": "Hindi", "pa": "Punjabi", "mr": "Marathi", "gu": "Gujarati", 
     "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam", 
@@ -10,25 +8,21 @@ const languageMap = {
     "ks": "Kashmiri", "kok": "Konkani", "mai": "Maithili", "ne": "Nepali"
 };
 const allLangCodes = Object.keys(languageMap);
-// --- END OF LANGUAGE MAP ---
 
 const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess }) => {
     const [formData, setFormData] = useState({});
     const [voiceOutput, setVoiceOutput] = useState('');
     const [isRecording, setIsRecording] = useState(false);
     
-    // Voice Language Codes (used in speech recognition setup)
     const voiceLangCodes = {
         'en': 'en-IN', 'hi': 'hi-IN', 'pa': 'pa-IN', 'mr': 'mr-IN', 'gu': 'gu-IN', 'bn': 'bn-IN', 'ta': 'ta-IN', 'te': 'te-IN',
         'kn': 'kn-IN', 'ml': 'ml-IN', 'or': 'or-IN', 'as': 'as-IN', 'ur': 'ur-IN', 'sd': 'sd-IN', 'sa': 'sa-IN', 'ks': 'ks-IN',
         'kok': 'kok-IN', 'mai': 'mai-IN', 'ne': 'ne-IN'
     };
 
-    // 1. Form Submission Logic (FIXED: Calls parent function to navigate)
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // Save data to local storage
         const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
         const newFarmData = {
             id: Date.now(),
@@ -38,27 +32,21 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
         existingData.push(newFarmData);
         localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
 
-        console.log("Data saved to Local Storage:", newFarmData);
-        
-        // --- FINAL FIX: Navigate to the Results Page ---
         if (onFormSubmitSuccess) {
             onFormSubmitSuccess();
         }
     };
 
-    // 2. Voice Input Logic (Full function included)
     const startVoiceRecording = () => {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
-            setVoiceOutput("Speech Recognition not supported in this browser.");
+            setVoiceOutput("Speech Recognition not supported.");
             return;
         }
 
         const recognition = new SpeechRecognition();
-        const recognitionLang = voiceLangCodes[currentLang] || voiceLangCodes.en;
-        recognition.lang = recognitionLang;
+        recognition.lang = voiceLangCodes[currentLang] || voiceLangCodes.en;
         recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
 
         recognition.onstart = () => {
             setIsRecording(true);
@@ -68,73 +56,87 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
             setVoiceOutput(transcript);
+            // Optional: Auto-fill a field based on voice if you build an NLP parser
         };
 
-        recognition.onerror = (event) => {
-            setIsRecording(false);
-            setVoiceOutput(`Error: ${event.error}. Please try again.`);
-        };
+        recognition.onerror = () => setIsRecording(false);
+        recognition.onend = () => setIsRecording(false);
 
-        recognition.onend = () => {
-            setIsRecording(false);
-        };
-
-        if (isRecording) {
-            recognition.stop();
-        } else {
-            recognition.start();
-        }
+        if (isRecording) recognition.stop();
+        else recognition.start();
     };
     
     return (
-        <section id="form-section" className="py-12 flex justify-center bg-gray-100 min-h-screen">
+        <section id="form-section" className="py-12 flex justify-center bg-gray-50 min-h-screen">
             <div className="w-full max-w-6xl px-4">
-                <h2 className="text-center text-4xl font-bold text-green-600 mb-8 font-poppins">{langData.formHeading}</h2>
-                <div className="flex flex-col lg:flex-row gap-8 shadow-2xl rounded-2xl bg-white p-6 md:p-8">
+                <h2 className="text-center text-4xl font-bold text-green-600 mb-8 font-poppins">
+                    {langData.formHeading}
+                </h2>
+                
+                <div className="flex flex-col lg:flex-row gap-8 shadow-xl rounded-3xl bg-white p-6 md:p-10 border border-gray-100">
                     
-                    {/* Left Panel: Voice Input (FIX: justify-start to move content up) */}
-                    <div className="flex-1 p-6 rounded-xl border border-gray-200 flex flex-col items-center justify-start text-center max-w-full lg:max-w-md">
-                        <i className="fa-solid fa-microphone text-6xl text-green-500 mb-4"></i>
-                        <h3 className="text-xl font-semibold text-green-600 mb-1">{langData.voiceInputTitle}</h3>
-                        <p className="text-sm text-gray-500 mb-4">{langData.voiceInputSubtitle}</p>
+                    {/* Left Panel: Voice Input */}
+                    <div className="flex-1 p-8 rounded-2xl bg-green-50/50 border border-green-100 flex flex-col items-center justify-start text-center max-w-full lg:max-w-md">
+                        <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all ${isRecording ? 'bg-red-100 text-red-500 animate-pulse' : 'bg-green-100 text-green-600'}`}>
+                            <i className="fa-solid fa-microphone text-3xl"></i>
+                        </div>
                         
-                        {/* Voice Language Dropdown */}
-                        <select id="voice-language" className="p-2 border border-gray-300 rounded-lg w-full max-w-xs mb-4" value={currentLang} onChange={(e) => onLangChange(e.target.value)}>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">{langData.voiceInputTitle}</h3>
+                        <p className="text-sm text-gray-500 mb-6">{langData.voiceInputSubtitle}</p>
+                        
+                        <select 
+                            className="p-3 border border-gray-200 rounded-xl w-full mb-4 shadow-sm bg-white outline-none focus:ring-2 focus:ring-green-500" 
+                            value={currentLang} 
+                            onChange={(e) => onLangChange(e.target.value)}
+                        >
                             {allLangCodes.map(lang => (<option key={lang} value={lang}>{languageMap[lang]}</option>))}
                         </select>
                         
-                        <button id="voice-btn" className={`px-6 py-2 rounded-full font-bold text-white transition duration-300 w-full max-w-xs ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}`} onClick={startVoiceRecording}>
-                            <i className={`fa-solid ${isRecording ? 'fa-stop' : 'fa-microphone'} mr-2`}></i> {isRecording ? 'Stop Recording' : 'Start Recording'}
+                        <button 
+                            onClick={startVoiceRecording}
+                            className={`px-8 py-3 rounded-full font-bold text-white shadow-lg transition-all w-full ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-green-600 hover:bg-green-700'}`}
+                        >
+                            {isRecording ? 'Stop Recording' : 'Start Voice Input'}
                         </button>
                         
-                        <div id="voice-output" className="mt-4 p-3 bg-green-50 text-gray-700 rounded-lg min-h-12 w-full max-w-xs">{"Ready"}</div>
+                        <div className="mt-6 p-4 bg-white border border-green-100 text-gray-600 rounded-xl text-sm min-h-[80px] w-full italic">
+                            {voiceOutput || "Your voice transcript will appear here..."}
+                        </div>
                     </div>
 
                     {/* Right Panel: Form Fields */}
-                    <div className="flex-1 p-6 rounded-xl border border-gray-200">
-                        <div className="mb-4 flex items-center justify-between">
-                            <label htmlFor="form-language" className="font-semibold text-gray-700 text-sm">Form Language:</label>
-                            {/* FIX: Form Language Dropdown (Displays full name) */}
-                            <select id="form-language" className="p-2 border border-gray-300 rounded-lg" value={currentLang} onChange={(e) => onLangChange(e.target.value)}>
+                    <div className="flex-1 p-2">
+                        <div className="mb-6 flex items-center justify-between bg-gray-50 p-3 rounded-xl">
+                            <span className="font-semibold text-gray-600 text-sm">Form Language</span>
+                            <select 
+                                className="p-1.5 border-none bg-transparent font-bold text-green-600 outline-none" 
+                                value={currentLang} 
+                                onChange={(e) => onLangChange(e.target.value)}
+                            >
                                 {allLangCodes.map(lang => (<option key={lang} value={lang}>{languageMap[lang]}</option>))}
                             </select>
                         </div>
                         
-                        <h3 className="text-xl font-semibold text-green-600 mb-6">{langData.formDetailsHeading}</h3>
+                        <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+                            <i className="fa-solid fa-file-invoice text-green-600"></i>
+                            {langData.formDetailsHeading}
+                        </h3>
                         
-                        <form onSubmit={handleSubmit} id="farm-form" className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             <FormInputs langData={langData} setFormData={setFormData} />
-
-                            <button type="submit" className="w-full px-6 py-3 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition duration-300 mt-6">{langData.submitBtn}</button>
+                            
+                            <button 
+                                type="submit" 
+                                className="w-full px-8 py-4 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 transition-all shadow-xl shadow-green-200 mt-4 text-lg"
+                            >
+                                {langData.submitBtn}
+                            </button>
                         </form>
                     </div>
                 </div>
-
-                {/* --- CHATBOT RESULT DISPLAY ANCHOR --- */}
-                {/* The ChatbotResult component will render here when App.js changes the page */}
             </div>
         </section>
     );
-}
+};
 
 export default FormSection;
