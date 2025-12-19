@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FormInputs from './FormInputs';
 
+// Language Map for display names
 const languageMap = {
     "en": "English", "hi": "Hindi", "pa": "Punjabi", "mr": "Marathi", "gu": "Gujarati", 
     "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam", 
@@ -11,7 +12,7 @@ const allLangCodes = Object.keys(languageMap);
 
 const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess }) => {
     const [formData, setFormData] = useState({});
-    const [voiceOutput, setVoiceOutput] = useState('');
+    const [voiceOutput, setVoiceOutput] = useState(''); // Correctly used below
     const [isRecording, setIsRecording] = useState(false);
     
     const voiceLangCodes = {
@@ -23,6 +24,7 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
     const handleSubmit = (e) => {
         e.preventDefault();
         
+        // Save data to local storage
         const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
         const newFarmData = {
             id: Date.now(),
@@ -32,6 +34,7 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
         existingData.push(newFarmData);
         localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
 
+        // Navigate to results
         if (onFormSubmitSuccess) {
             onFormSubmitSuccess();
         }
@@ -55,15 +58,17 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
-            setVoiceOutput(transcript);
-            // Optional: Auto-fill a field based on voice if you build an NLP parser
+            setVoiceOutput(transcript); // Updating the state with the transcript
         };
 
         recognition.onerror = () => setIsRecording(false);
         recognition.onend = () => setIsRecording(false);
 
-        if (isRecording) recognition.stop();
-        else recognition.start();
+        if (isRecording) {
+            recognition.stop();
+        } else {
+            recognition.start();
+        }
     };
     
     return (
@@ -99,6 +104,7 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
                             {isRecording ? 'Stop Recording' : 'Start Voice Input'}
                         </button>
                         
+                        {/* voiceOutput IS USED HERE TO SHOW THE TEXT */}
                         <div className="mt-6 p-4 bg-white border border-green-100 text-gray-600 rounded-xl text-sm min-h-[80px] w-full italic">
                             {voiceOutput || "Your voice transcript will appear here..."}
                         </div>
