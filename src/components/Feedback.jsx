@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import CardActionArea from '@mui/material/CardActionArea';
+import ActionAreaCard from './card_Feed';
+
 
 const Feedback = ({ langData }) => {
   const [rating, setRating] = useState(0);
@@ -54,7 +50,19 @@ const Feedback = ({ langData }) => {
           <br></br>
           Feedbacks about previous Crops
         </h2>
-        <Box
+
+        <ActionAreaCard title="Paddy" url={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQddur2XKt9TVxN3g7IRKz-vj_GMisUDf3A&s"} description={"After following the monsoon schedule and fertilizer tips on KrishiSakhi, my paddy yield increased by 25% this year. The 'My Farm' feature kept me organized throughout the season."} name ={"— Rajesh Kumar, Punjab"} />
+
+        
+        <ActionAreaCard title="Wheat"  url={"https://cdn.britannica.com/18/122518-050-A0740F9F/Field-durum-wheat.jpg"} description={"I was always confused about the right time for the first irrigation of my wheat crop.The local trends on this site gave me the exact data I needed. My grains are healthier and heavier than last season"} name={"— Suresh Singh, Uttar Pradesh"} />
+
+        <ActionAreaCard title="Maize" url={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TmRTwyo1lVOyMz4Y-ZDMHWLEPafDpcl0Rg&s"} description={"The pest control alerts for Maize saved my entire field from seasonly pests. KrishiSakhi chatbot is truly a friend to the farmer"} name={"— Anil Meena, Madhya Pradesh"} />
+        
+
+
+
+
+        {/* <Box
           sx={{
             margin: '0 auto',
             padding: '0',
@@ -67,15 +75,15 @@ const Feedback = ({ langData }) => {
           }}
         >
           {/* Card one */}
-          <Card sx={{ maxWidth: 300 }}>
+          {/* <Card sx={{ maxWidth: 300 }}>
             <CardActionArea>
               <CardMedia
                 component="img"
                 height="140"
                 image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQddur2XKt9TVxN3g7IRKz-vj_GMisUDf3A&s"
                 alt="Paddy"
-              />
-              <CardContent>
+              /> */}
+              {/* <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   Paddy
                 </Typography>
@@ -89,7 +97,7 @@ const Feedback = ({ langData }) => {
           </Card>
 
           {/* Feedback two */}
-          <Card sx={{ maxWidth: 300 }}>
+          {/* <Card sx={{ maxWidth: 300 }}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -110,10 +118,10 @@ const Feedback = ({ langData }) => {
 
               </CardContent>
             </CardActionArea>
-          </Card>
+          </Card> */}
 
           {/* Feedback 3*/}
-          <Card sx={{ maxWidth: 300 }}>
+          {/* <Card sx={{ maxWidth: 300 }}>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -133,8 +141,7 @@ const Feedback = ({ langData }) => {
                 </Typography>
               </CardContent>
             </CardActionArea>
-          </Card>
-        </Box>
+          </Card> */}
 
 
 
@@ -157,7 +164,8 @@ const Feedback = ({ langData }) => {
         <div className="bg-white border border-gray-100 rounded-[2rem] p-8 shadow-sm space-y-6">
           <h4 className="font-bold text-gray-800 text-lg tracking-tight">Written Feedback</h4>
           <textarea
-            className="w-full h-40 bg-gray-50 border border-gray-100 rounded-3xl p-6 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-all resize-none shadow-inner"
+
+className="w-full h-40 bg-gray-50 border border-gray-100 rounded-3xl p-6 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-all resize-none shadow-inner"
             placeholder="Tell us how we can improve..."
           ></textarea>
         </div>
