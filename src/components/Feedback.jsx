@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
 import ActionAreaCard from './card_Feed';
 
 
@@ -51,18 +52,7 @@ const Feedback = ({ langData }) => {
           Feedbacks about previous Crops
         </h2>
 
-        <ActionAreaCard title="Paddy" url={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQddur2XKt9TVxN3g7IRKz-vj_GMisUDf3A&s"} description={"After following the monsoon schedule and fertilizer tips on KrishiSakhi, my paddy yield increased by 25% this year. The 'My Farm' feature kept me organized throughout the season."} name ={"— Rajesh Kumar, Punjab"} />
-
-        
-        <ActionAreaCard title="Wheat"  url={"https://cdn.britannica.com/18/122518-050-A0740F9F/Field-durum-wheat.jpg"} description={"I was always confused about the right time for the first irrigation of my wheat crop.The local trends on this site gave me the exact data I needed. My grains are healthier and heavier than last season"} name={"— Suresh Singh, Uttar Pradesh"} />
-
-        <ActionAreaCard title="Maize" url={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TmRTwyo1lVOyMz4Y-ZDMHWLEPafDpcl0Rg&s"} description={"The pest control alerts for Maize saved my entire field from seasonly pests. KrishiSakhi chatbot is truly a friend to the farmer"} name={"— Anil Meena, Madhya Pradesh"} />
-        
-
-
-
-
-        {/* <Box
+        <Box
           sx={{
             margin: '0 auto',
             padding: '0',
@@ -74,76 +64,13 @@ const Feedback = ({ langData }) => {
             justifyContent: 'center'
           }}
         >
-          {/* Card one */}
-          {/* <Card sx={{ maxWidth: 300 }}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQddur2XKt9TVxN3g7IRKz-vj_GMisUDf3A&s"
-                alt="Paddy"
-              /> */}
-              {/* <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Paddy
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  After following the monsoon schedule and fertilizer tips on KrishiSakhi, my paddy yield
-                  increased by 25% this year. The 'My Farm' feature kept me organized throughout the season.
-                  <p style={{ fontWeight: 'bold', marginTop: '10px' }}>— Rajesh Kumar, Punjab</p>
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-
-          {/* Feedback two */}
-          {/* <Card sx={{ maxWidth: 300 }}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://cdn.britannica.com/18/122518-050-A0740F9F/Field-durum-wheat.jpg"
-                alt="Wheat"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Wheat
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  I was always confused about the right time for the first irrigation of my wheat crop. 
-        The local trends on this site gave me the exact data I needed. My grains are healthier and 
-        heavier than last season
-                  <p style={{ fontWeight: 'bold', marginTop: '10px' }}>— Suresh Singh, Uttar Pradesh</p>
-                </Typography>
-
-              </CardContent>
-            </CardActionArea>
-          </Card> */}
-
-          {/* Feedback 3*/}
-          {/* <Card sx={{ maxWidth: 300 }}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TmRTwyo1lVOyMz4Y-ZDMHWLEPafDpcl0Rg&s"
-                alt="Maize"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  Maize
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  The pest control alerts for Maize saved my entire field from a fall armyworm attack. 
-        KrishiSakhi is truly a friend to the farmer
-                  <p style={{ fontWeight: 'bold', marginTop: '10px' }}>— Anil Meena, Madhya Pradesh</p>
-
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card> */}
+          <ActionAreaCard title="Paddy" url={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQddur2XKt9TVxN3g7IRKz-vj_GMisUDf3A&s"} description={"After following the monsoon schedule and fertilizer tips on KrishiSakhi, my paddy yield increased by 25% this year. The 'My Farm' feature kept me organized throughout the season."} name={"— Rajesh Kumar, Punjab"} />
 
 
+          <ActionAreaCard title="Wheat" url={"https://cdn.britannica.com/18/122518-050-A0740F9F/Field-durum-wheat.jpg"} description={"I was always confused about the right time for the first irrigation of my wheat crop.The local trends on this site gave me the exact data I needed. My grains are healthier and heavier than last season"} name={"— Suresh Singh, Uttar Pradesh"} />
+
+          <ActionAreaCard title="Maize" url={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4TmRTwyo1lVOyMz4Y-ZDMHWLEPafDpcl0Rg&s"} description={"The pest control alerts for Maize saved my entire field from seasonly pests. KrishiSakhi chatbot is truly a friend to the farmer"} name={"— Anil Meena, Madhya Pradesh"} />
+        </Box>
 
 
         {/* Card 2: Voice Feedback */}
@@ -165,7 +92,7 @@ const Feedback = ({ langData }) => {
           <h4 className="font-bold text-gray-800 text-lg tracking-tight">Written Feedback</h4>
           <textarea
 
-className="w-full h-40 bg-gray-50 border border-gray-100 rounded-3xl p-6 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-all resize-none shadow-inner"
+            className="w-full h-40 bg-gray-50 border border-gray-100 rounded-3xl p-6 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-all resize-none shadow-inner"
             placeholder="Tell us how we can improve..."
           ></textarea>
         </div>
