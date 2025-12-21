@@ -11,12 +11,7 @@ const Footer = ({ langData }) => {
                     <span>{langData.heroTitle || 'KrishiSakhi'}</span>
                 </div>
                 
-                {/* Quick Links (Optional but looks professional) */}
-                <div className="flex gap-6 text-sm font-medium text-gray-500">
-                    <span className="hover:text-green-600 cursor-pointer">{langData.footerSchemes || 'Schemes'}</span>
-                    <span className="hover:text-green-600 cursor-pointer">{langData.footerMarketPrices || 'Market Prices'}</span>
-                    <span className="hover:text-green-600 cursor-pointer">{langData.footerContact || 'Contact'}</span>
-                </div>
+               
                 
                 {/* Social Icons */}
                 <div className="footer-social flex gap-6 text-2xl">

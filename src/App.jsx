@@ -4,7 +4,8 @@ import Hero from './components/Hero';
 import FormSection from './components/FormSection';
 import Footer from './components/Footer';
 import ChatbotResult from './components/ChatbotResult';
-// Naye components import karein
+
+// Naye components
 import MyFarm from './components/MyFarm';
 import ToDoList from './components/ToDoList';
 import LocalTrend from './components/LocalTrend';
@@ -32,20 +33,32 @@ function App() {
 
     const langData = translations[currentLang] || translations.en;
 
-    // Is function se hum decide karenge ki screen par kya dikhega
+    // Smooth scroll + scroll-margin-top fix
+    const handleNavigate = (page) => {
+        setCurrentPage(page);
+        const element = document.getElementById(page);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     const renderPage = () => {
+        const pageWrapperClass = "pt-28 scroll-mt-28"; // navbar height ke hisab se padding top
+
         switch(currentPage) {
             case 'my-farm': 
-                return <MyFarm langData={langData} />;
+                return <div id="my-farm" className={pageWrapperClass}><MyFarm langData={langData} /></div>;
             case 'todo': 
-                return <ToDoList langData={langData} />;
+                return <div id="todo" className={pageWrapperClass}><ToDoList langData={langData} /></div>;
             case 'trend': 
-                return <LocalTrend langData={langData} />;
+                return <div id="trend" className={pageWrapperClass}><LocalTrend langData={langData} /></div>;
             case 'feedback': 
-                return <Feedback langData={langData} />;
+                return <div id="feedback" className={pageWrapperClass}><Feedback langData={langData} /></div>;
             case 'results': 
-                return <ChatbotResult langData={langData} />;
-            default: // Home Page logic
+                return <div className={pageWrapperClass}><ChatbotResult langData={langData} /></div>;
+            default: // Home Page
                 return (
                     <>
                         <Hero 
@@ -58,12 +71,14 @@ function App() {
                             }}
                         />
                         {isFormVisible && (
-                            <FormSection 
-                                langData={langData} 
-                                currentLang={currentLang}
-                                onLangChange={handleLanguageChange}
-                                onFormSubmitSuccess={navigateToResults}
-                            />
+                            <div id="form-section" className={pageWrapperClass}>
+                                <FormSection 
+                                    langData={langData} 
+                                    currentLang={currentLang}
+                                    onLangChange={handleLanguageChange}
+                                    onFormSubmitSuccess={navigateToResults}
+                                />
+                            </div>
                         )}
                     </>
                 );
@@ -72,11 +87,13 @@ function App() {
 
     return (
         <div className="min-h-screen flex flex-col font-lato text-gray-800">
+            {/* Fixed navbar with backdrop blur */}
             <Header 
                 langData={langData} 
                 currentLang={currentLang}
                 onLangChange={handleLanguageChange}
-                onNavigate={setCurrentPage} // Navigation handler pass kiya
+                onNavigate={handleNavigate}
+                currentPage={currentPage}
             />
             <main className="flex-grow">
                 {renderPage()}
