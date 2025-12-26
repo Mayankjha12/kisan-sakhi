@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Naya change: Backend se connect karne ke liye
 import FormInputs from './FormInputs';
 
 // Language Map for display names
@@ -12,7 +13,7 @@ const allLangCodes = Object.keys(languageMap);
 
 const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess }) => {
     const [formData, setFormData] = useState({});
-    const [voiceOutput, setVoiceOutput] = useState(''); // Correctly used below
+    const [voiceOutput, setVoiceOutput] = useState('');
     const [isRecording, setIsRecording] = useState(false);
     
     const voiceLangCodes = {
@@ -21,22 +22,33 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
         'kok': 'kok-IN', 'mai': 'mai-IN', 'ne': 'ne-IN'
     };
 
-    const handleSubmit = (e) => {
+    // CHANGE: Ab ye data MongoDB mein save hoga
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Save data to local storage
-        const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
-        const newFarmData = {
-            id: Date.now(),
-            dateSubmitted: new Date().toISOString(),
-            ...formData
-        };
-        existingData.push(newFarmData);
-        localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
+        try {
+            // Data ko backend API par bhej rahe hain
+            const response = await axios.post('http://localhost:5000/api/farms/submit', {
+                ...formData,
+                voiceTranscript: voiceOutput, // Voice text bhi backend jayega
+                dateSubmitted: new Date().toISOString()
+            });
 
-        // Navigate to results
-        if (onFormSubmitSuccess) {
-            onFormSubmitSuccess();
+            console.log("Success:", response.data);
+            alert("Kisan bhai, aapka data MongoDB mein save ho gaya!");
+
+            // Local storage backup (Optional)
+            const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
+            existingData.push(response.data);
+            localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
+
+            // Result page par navigate karein
+            if (onFormSubmitSuccess) {
+                onFormSubmitSuccess();
+            }
+        } catch (error) {
+            console.error("Submission Error:", error);
+            alert("Maaf kijiye, server connect nahi ho paya. Backend chalu hai?");
         }
     };
 
@@ -58,7 +70,10 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
-            setVoiceOutput(transcript); // Updating the state with the transcript
+            setVoiceOutput(transcript);
+            
+            // Sync voice output with formData
+            setFormData(prev => ({ ...prev, currentProblem: transcript }));
         };
 
         recognition.onerror = () => setIsRecording(false);
@@ -98,13 +113,13 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
                         </select>
                         
                         <button 
+                            type="button"
                             onClick={startVoiceRecording}
                             className={`px-8 py-3 rounded-full font-bold text-white shadow-lg transition-all w-full ${isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-green-600 hover:bg-green-700'}`}
                         >
                             {isRecording ? 'Stop Recording' : 'Start Voice Input'}
                         </button>
                         
-                        {/* voiceOutput IS USED HERE TO SHOW THE TEXT */}
                         <div className="mt-6 p-4 bg-white border border-green-100 text-gray-600 rounded-xl text-sm min-h-[80px] w-full italic">
                             {voiceOutput || "Your voice transcript will appear here..."}
                         </div>
