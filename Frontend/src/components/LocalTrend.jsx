@@ -1,6 +1,6 @@
 import React from 'react';
 // Import Recharts components
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+//import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 const LocalTrend = () => {
   // Updated data: added numerical 'value' for the graph to use
