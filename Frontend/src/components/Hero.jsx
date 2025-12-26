@@ -1,18 +1,48 @@
-// Hero.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+const images = [
+  "/img-1.webp",
+  "/img-2.webp",
+  "/img-3.webp",
+];
+
 
 const Hero = ({ langData, onShowForm }) => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 7000); // change every 7 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section
-      className="relative h-screen w-full bg-cover bg-center"
-      style={{
-        backgroundImage: `url('/Farmer-using-Phone.jpg')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-      }}
-    >
+    <section className="relative h-screen w-full overflow-hidden">
+
+      {/* BACKGROUND IMAGES */}
+      {/* BACKGROUND IMAGE */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${images[currentImage]})` }}
+      />
+      <div
+  className="absolute inset-0 bg-cover bg-center"
+  style={{ backgroundImage: `url(${images[currentImage]})` }}
+/>
+
+
+
       {/* LIGHT OVERLAY */}
-      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0 bg-black/20" />
 
       {/* CONTENT */}
       <div className="relative z-10 h-full flex items-center px-6 lg:px-20">
@@ -27,27 +57,23 @@ const Hero = ({ langData, onShowForm }) => {
             animate-[fadeUp_1s_ease-out]
           "
         >
-          <h2 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-wide scroll-mt-20">
+          <h2 className="text-5xl md:text-7xl font-extrabold mb-6">
             {langData.heroTitle || "KrishiSakhi"}
           </h2>
 
-          <p className="text-lg md:text-xl text-gray-100 mb-10 leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-100 mb-10">
             Empowering farmers with smart tools, local language support,
             and real-time agricultural insights.
           </p>
 
           <button
+            onClick={onShowForm}
             className="
               bg-green-600 px-12 py-4 rounded-full
-              text-xl font-bold
-              shadow-xl
-              hover:bg-green-700
-              transition-all duration-300
-              hover:scale-105
-              hover:shadow-green-500/50
-              active:scale-95
+              text-xl font-bold shadow-xl
+              hover:bg-green-700 transition-all
+              hover:scale-105 active:scale-95
             "
-            onClick={onShowForm}
           >
             {langData.heroBtn || "Helping Farmers Build Better"}
           </button>
@@ -55,23 +81,23 @@ const Hero = ({ langData, onShowForm }) => {
       </div>
 
       {/* SCROLL INDICATOR */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce z-10">
         <i className="fa-solid fa-chevron-down text-white opacity-70 text-xl"></i>
       </div>
 
       <style>
         {`
           @keyframes fadeUp {
-            0% {
+            from {
               opacity: 0;
               transform: translateY(40px);
             }
-            100% {
+            to {
               opacity: 1;
               transform: translateY(0);
             }
-          }
-        `}
+          }`
+        }
       </style>
     </section>
   );
