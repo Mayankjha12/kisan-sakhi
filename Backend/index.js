@@ -1,70 +1,39 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 require("dotenv").config();
 
 const Farm = require("./models/Farm");
 
 const app = express();
-
-/* ===============================
-   ✅ MIDDLEWARES (ORDER MATTERS)
-================================ */
-
-// Allow Netlify frontend
-app.use(
-  cors({
-    origin: "https://kisansakhiii.netlify.app",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-// Parse JSON body
 app.use(express.json());
 
-/* ===============================
-   ✅ TEST ROUTE
-================================ */
+// Health check
 app.get("/", (req, res) => {
-  res.send("✅ KrishiSakhi Backend is running");
+  res.send("Backend is alive ✅");
 });
 
-/* ===============================
-   ✅ API ROUTE: FORM SUBMIT
-================================ */
+// API
 app.post("/api/farms/submit", async (req, res) => {
   try {
-    console.log("📩 Data Received:", req.body);
+    const farm = new Farm(req.body);
+    await farm.save();
 
-    const farmData = new Farm(req.body);
-    await farmData.save();
-
-    res.status(201).json({
+    res.json({
       success: true,
-      message: "🌾 Data MongoDB mein save ho gaya!",
+      message: "Farm data saved",
     });
   } catch (err) {
-    console.error("❌ Save Error:", err);
-    res.status(400).json({
-      success: false,
-      error: err.message,
-    });
+    res.status(500).json({ success: false });
   }
 });
 
-/* ===============================
-   ✅ MONGODB CONNECTION
-================================ */
+// DB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ KrishiSakhi DB Connected!"))
-  .catch((err) => console.error("❌ DB Connection Error:", err));
+  .then(() => console.log("MongoDB connected"))
+  .catch(console.error);
 
-/* ===============================
-   ✅ SERVER START
-================================ */
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+app.listen(5001, () => {
+  console.log("Backend running on 5001");
 });
+
