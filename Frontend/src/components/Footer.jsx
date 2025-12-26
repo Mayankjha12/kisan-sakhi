@@ -51,9 +51,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto border-t border-green-300/30 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-100">
         <p>© {currentYear} BrandName Inc. All rights reserved.</p>
         <div className="flex space-x-6 mt-3 md:mt-0 text-gray-200">
-          <a href="#" className="hover:text-white">Terms</a>
-          <a href="#" className="hover:text-white">Privacy</a>
-          <a href="#" className="hover:text-white">Cookies</a>
+          <a href="/" className="hover:text-white">Terms</a>
+          <a href="/" className="hover:text-white">Privacy</a>
+          <a href="/" className="hover:text-white">Cookies</a>
         </div>
       </div>
     </footer>
