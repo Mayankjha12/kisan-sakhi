@@ -41,35 +41,28 @@ const Footer = () => {
         </div>
       </div>
 
-
       {/* Bottom Section */}
-      <div className="max-w-7xl mx-auto mt-1 pt-2 text-sm text-gray-100">
+      <div className="max-w-7xl mx-auto border-t border-green-300/30 mt-6 pt-4 text-sm text-gray-100">
+        <div className="flex flex-col items-center gap-3">
 
-
-        {/* Bottom Section */}
-        <div className="max-w-7xl mx-auto border-t border-green-300/30 mt-6 pt-4 text-sm text-gray-100">
-
-          <div className="flex flex-col items-center gap-3">
-
-            {/* Social Icons */}
-            <div className="flex gap-6 text-xl">
-              <a href="#" aria-label="Facebook" className="hover:text-white transition">
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-              <a href="#" aria-label="X (Twitter)" className="hover:text-white transition">
-                <i className="fa-brands fa-x-twitter"></i>
-              </a>
-              <a href="#" aria-label="Instagram" className="hover:text-white transition">
-                <i className="fa-brands fa-instagram"></i>
-              </a>
-            </div>
-
-            {/* Copyright */}
-            <p className="text-center">
-              © {currentYear} KrishiSakhi. All rights reserved.
-            </p>
-
+          {/* Social Icons - FIXED href="#" issue for Netlify */}
+          <div className="flex gap-6 text-xl">
+            <a href="/" aria-label="Facebook" className="hover:text-white transition">
+              <i className="fa-brands fa-facebook"></i>
+            </a>
+            <a href="/" aria-label="X (Twitter)" className="hover:text-white transition">
+              <i className="fa-brands fa-x-twitter"></i>
+            </a>
+            <a href="/" aria-label="Instagram" className="hover:text-white transition">
+              <i className="fa-brands fa-instagram"></i>
+            </a>
           </div>
+
+          {/* Copyright */}
+          <p className="text-center">
+            © {currentYear} KrishiSakhi. All rights reserved.
+          </p>
+
         </div>
       </div>
     </footer>
