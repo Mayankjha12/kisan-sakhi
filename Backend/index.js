@@ -1,30 +1,70 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
-const Farm = require('./models/Farm');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+
+const Farm = require("./models/Farm");
 
 const app = express();
 
-// Middlewares
-app.use(cors()); // Iske bina frontend se data nahi aayega
+/* ===============================
+   ✅ MIDDLEWARES (ORDER MATTERS)
+================================ */
+
+// Allow Netlify frontend
+app.use(
+  cors({
+    origin: "https://kisansakhiii.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+// Parse JSON body
 app.use(express.json());
 
-// API Route: Form Submit karne ke liye
-app.post('/api/farms/submit', async (req, res) => {
-    try {
-        const farmData = new Farm(req.body);
-        await farmData.save();
-        res.status(201).json({ message: "Data MongoDB mein save ho gaya!" });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
+/* ===============================
+   ✅ TEST ROUTE
+================================ */
+app.get("/", (req, res) => {
+  res.send("✅ KrishiSakhi Backend is running");
 });
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("✅ KrishiSakhi DB Connected!"))
-    .catch(err => console.log("❌ DB Connection Error:", err));
+/* ===============================
+   ✅ API ROUTE: FORM SUBMIT
+================================ */
+app.post("/api/farms/submit", async (req, res) => {
+  try {
+    console.log("📩 Data Received:", req.body);
 
+    const farmData = new Farm(req.body);
+    await farmData.save();
+
+    res.status(201).json({
+      success: true,
+      message: "🌾 Data MongoDB mein save ho gaya!",
+    });
+  } catch (err) {
+    console.error("❌ Save Error:", err);
+    res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
+/* ===============================
+   ✅ MONGODB CONNECTION
+================================ */
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ KrishiSakhi DB Connected!"))
+  .catch((err) => console.error("❌ DB Connection Error:", err));
+
+/* ===============================
+   ✅ SERVER START
+================================ */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
