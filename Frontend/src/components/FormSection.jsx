@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Naya change: Backend se connect karne ke liye
+import axios from 'axios';
 import FormInputs from './FormInputs';
 
 // Language Map for display names
@@ -16,39 +16,57 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
     const [voiceOutput, setVoiceOutput] = useState('');
     const [isRecording, setIsRecording] = useState(false);
     
+    // NEW: Chatbot States
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [chatReply, setChatReply] = useState("");
+    const [isChatLoading, setIsChatLoading] = useState(false);
+
     const voiceLangCodes = {
         'en': 'en-IN', 'hi': 'hi-IN', 'pa': 'pa-IN', 'mr': 'mr-IN', 'gu': 'gu-IN', 'bn': 'bn-IN', 'ta': 'ta-IN', 'te': 'te-IN',
         'kn': 'kn-IN', 'ml': 'ml-IN', 'or': 'or-IN', 'as': 'as-IN', 'ur': 'ur-IN', 'sd': 'sd-IN', 'sa': 'sa-IN', 'ks': 'ks-IN',
         'kok': 'kok-IN', 'mai': 'mai-IN', 'ne': 'ne-IN'
     };
 
-    // CHANGE: Ab ye data MongoDB mein save hoga
+    // FINAL SUBMIT LOGIC with Render URL and Gemini Chat
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const backendURL = 'https://kisan-sakhi-new.onrender.com'; // Tera Live Render URL
         
         try {
-            // Data ko backend API par bhej rahe hain
-            const response = await axios.post('http://localhost:5001/api/farms/submit', {
+            // 1. Submit to MongoDB
+            const response = await axios.post(`${backendURL}/api/farms/submit`, {
                 ...formData,
-                voiceTranscript: voiceOutput, // Voice text bhi backend jayega
+                voiceTranscript: voiceOutput,
                 dateSubmitted: new Date().toISOString()
             });
 
-            console.log("Success:", response.data);
-            alert("Kisan bhai, aapka data MongoDB mein save ho gaya!");
+            if (response.data.success) {
+                console.log("Data Saved:", response.data);
+                
+                // 2. Trigger Gemini AI Expert Advice
+                setIsChatLoading(true);
+                try {
+                    const aiRes = await axios.post(`${backendURL}/api/ai/chat`, {
+                        prompt: "Mera data submit ho gaya hai, mujhe expert advice dein.",
+                        farmData: formData
+                    });
+                    setChatReply(aiRes.data.reply);
+                    setIsChatOpen(true); // Pop-up khulega
+                } catch (aiErr) {
+                    console.error("AI Error:", aiErr);
+                    alert("Data save ho gaya, par AI abhi connect nahi ho paya.");
+                }
+                setIsChatLoading(false);
 
-            // Local storage backup (Optional)
-            const existingData = JSON.parse(localStorage.getItem('krishiSakhiData')) || [];
-            existingData.push(response.data);
-            localStorage.setItem('krishiSakhiData', JSON.stringify(existingData));
-
-            // Result page par navigate karein
-            if (onFormSubmitSuccess) {
-                onFormSubmitSuccess();
+                // Optional: Navigation or Success Callback
+                if (onFormSubmitSuccess) {
+                    // Yahan aap navigation delay kar sakte hain chat dikhane ke liye
+                    // onFormSubmitSuccess(); 
+                }
             }
         } catch (error) {
             console.error("Submission Error:", error);
-            alert("Maaf kijiye, server connect nahi ho paya. Backend chalu hai?");
+            alert("Maaf kijiye, server connect nahi ho paya. Render URL check karein.");
         }
     };
 
@@ -71,8 +89,6 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
             setVoiceOutput(transcript);
-            
-            // Sync voice output with formData
             setFormData(prev => ({ ...prev, currentProblem: transcript }));
         };
 
@@ -87,7 +103,7 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
     };
     
     return (
-        <section id="form-section" className="py-12 flex justify-center bg-gray-50 min-h-screen">
+        <section id="form-section" className="py-12 flex justify-center bg-gray-50 min-h-screen relative">
             <div className="w-full max-w-6xl px-4">
                 <h2 className="text-center text-4xl font-bold text-green-600 mb-8 font-poppins">
                     {langData.formHeading}
@@ -100,17 +116,8 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
                         <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all ${isRecording ? 'bg-red-100 text-red-500 animate-pulse' : 'bg-green-100 text-green-600'}`}>
                             <i className="fa-solid fa-microphone text-3xl"></i>
                         </div>
-                        
                         <h3 className="text-xl font-bold text-gray-800 mb-2">{langData.voiceInputTitle}</h3>
                         <p className="text-sm text-gray-500 mb-6">{langData.voiceInputSubtitle}</p>
-                        
-                        <select 
-                            className="p-3 border border-gray-200 rounded-xl w-full mb-4 shadow-sm bg-white outline-none focus:ring-2 focus:ring-green-500" 
-                            value={currentLang} 
-                            onChange={(e) => onLangChange(e.target.value)}
-                        >
-                            {allLangCodes.map(lang => (<option key={lang} value={lang}>{languageMap[lang]}</option>))}
-                        </select>
                         
                         <button 
                             type="button"
@@ -127,34 +134,50 @@ const FormSection = ({ langData, currentLang, onLangChange, onFormSubmitSuccess 
 
                     {/* Right Panel: Form Fields */}
                     <div className="flex-1 p-2">
-                        <div className="mb-6 flex items-center justify-between bg-gray-50 p-3 rounded-xl">
-                            <span className="font-semibold text-gray-600 text-sm">Form Language</span>
-                            <select 
-                                className="p-1.5 border-none bg-transparent font-bold text-green-600 outline-none" 
-                                value={currentLang} 
-                                onChange={(e) => onLangChange(e.target.value)}
-                            >
-                                {allLangCodes.map(lang => (<option key={lang} value={lang}>{languageMap[lang]}</option>))}
-                            </select>
-                        </div>
-                        
                         <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
                             <i className="fa-solid fa-file-invoice text-green-600"></i>
                             {langData.formDetailsHeading}
                         </h3>
-                        
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <FormInputs langData={langData} setFormData={setFormData} />
-                            
                             <button 
                                 type="submit" 
-                                className="w-full px-8 py-4 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 transition-all shadow-xl shadow-green-200 mt-4 text-lg"
+                                disabled={isChatLoading}
+                                className={`w-full px-8 py-4 text-white font-bold rounded-2xl transition-all shadow-xl mt-4 text-lg ${isChatLoading ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700 shadow-green-200'}`}
                             >
-                                {langData.submitBtn}
+                                {isChatLoading ? 'Processing AI Advice...' : langData.submitBtn}
                             </button>
                         </form>
                     </div>
                 </div>
+
+                {/* GEMINI CHATBOT POPUP */}
+                {isChatOpen && (
+                    <div className="fixed bottom-10 right-10 w-96 bg-white shadow-2xl rounded-3xl p-6 border-t-8 border-green-600 z-50 animate-in fade-in zoom-in duration-300">
+                        <div className="flex justify-between items-center mb-4">
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white">
+                                    <i className="fa-solid fa-robot text-xs"></i>
+                                </div>
+                                <h4 className="font-bold text-gray-800">KrishiSakhi AI Expert</h4>
+                            </div>
+                            <button onClick={() => setIsChatOpen(false)} className="text-gray-400 hover:text-red-500 transition-colors">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                                {chatReply || "Fasal ki jaanch kar raha hoon..."}
+                            </p>
+                        </div>
+                        <button 
+                            onClick={() => window.location.href = '/my-farm'}
+                            className="mt-4 w-full bg-green-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-green-700 transition-all"
+                        >
+                            Detailed Report Dekhein
+                        </button>
+                    </div>
+                )}
             </div>
         </section>
     );
