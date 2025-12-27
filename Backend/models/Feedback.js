@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const FeedbackSchema = new mongoose.Schema({
     rating: Number,
-    voiceFeedback: String, // Voice recording ka text
     writtenFeedback: String,
-    date: { type: Date, default: Date.now }
+    voiceTranscript: String, // Voice feedback ke liye
+    createdAt: { type: Date, default: Date.now }
 });
-module.exports = mongoose.model('Feedback', FeedbackSchema);
+module.exports = mongoose.model("Feedback", FeedbackSchema);
