@@ -30,6 +30,7 @@ const MyFarm = () => {
         prompt: "Analyze my farm health based on the data provided and give me: 1. Health Percentage, 2. Number of Issues, 3. Urgent (Yes/No).",
         farmData: farmData
       });
+      console.log(res.data);
       
       // AI response ko parse karke state update (Simple Mock Logic)
       setAiAnalysis({
